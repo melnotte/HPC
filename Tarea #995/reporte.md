@@ -91,6 +91,8 @@ flowchart LR
 | Tiempo máximo de solicitud  | 11.5 s           |
 | Solicitudes fallidas        | 0                |
 
+- **Requests**: 4000
+- **Concurrencia**: 500
 ![AB](ab2.PNG)
 
 ## Comparación de Arquitectura
