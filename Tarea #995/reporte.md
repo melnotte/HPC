@@ -45,6 +45,7 @@ flowchart LR
     class wp1,wp2,wp3 wp
     class haproxy lb
 ```
+![Contenedores](contenedores.PNG)
 
 ## Herramientas de Prueba de Carga
 
