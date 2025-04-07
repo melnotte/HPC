@@ -9,7 +9,7 @@ Realizar el despliegue de Wordpress en HA con un LB con HAProxy y una BD sincron
 - **MariaDB Galera Cluster** con 3 nodos (`dbnode1`, `dbnode2`, `dbnode3`)
 - **HAProxy** como balanceador de carga
 - Infraestructura completamente contenedorizada con Docker Compose
-- +-----------------------------------------------------------------------+
++-----------------------------------------------------------------------+
 |                        Docker Compose Stack                           |
 |                                                                       |
 |  +----------------+    +----------------+    +----------------+       |
