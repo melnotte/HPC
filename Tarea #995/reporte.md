@@ -74,6 +74,12 @@ flowchart LR
 | Transferencia total      | 65.16 MB  |
 | Transacción más larga    | 33.89 s   |
 
+## Otra prueba
+- **Usuarios simultáneos**: 200
+- **Duración**: 5 minutos
+
+![Siege](during_siege.PNG)
+
 ## Parámetros de la Prueba Apache Benchmark
 - **Requests**: 3000
 - **Concurrencia**: 100
