@@ -78,6 +78,8 @@ flowchart LR
 - **Requests**: 3000
 - **Concurrencia**: 100
 
+## Resultados
+
 | Métrica                     | Valor            |
 |-----------------------------|------------------|
 | Solicitudes completadas     | 3000             |
