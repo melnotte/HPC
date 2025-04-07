@@ -9,34 +9,42 @@ Realizar el despliegue de Wordpress en HA con un LB con HAProxy y una BD sincron
 - **MariaDB Galera Cluster** con 3 nodos (`dbnode1`, `dbnode2`, `dbnode3`)
 - **HAProxy** como balanceador de carga
 - Infraestructura completamente contenedorizada con Docker Compose
-+-----------------------------------------------------------------------+
-|                        Docker Compose Stack                           |
-|                                                                       |
-|  +----------------+    +----------------+    +----------------+       |
-|  |   dbnode1      |    |   dbnode2      |    |   dbnode3      |       |
-|  |  (Galera)      |<-->|  (Galera)      |<-->|  (Galera)      |       |
-|  |  Primary Node  |    |  Secondary     |    |  Secondary     |       |
-|  +-------+--------+    +-------+--------+    +-------+--------+       |
-|          |                     |                     |                |
-|          |                     |                     |                |
-|  +-------v--------+   +--------v-------+   +--------v-------+         |
-|  |   webnode1     |   |   webnode2     |   |   webnode3     |         |
-|  |  (WordPress)   |   |  (WordPress)   |   |  (WordPress)   |         |
-|  +-------+--------+   +--------+-------+   +--------+-------+         |
-|          |                     |                     |                |
-|          +----------+----------+----------+----------+                |
-|                     |                     |                           |
-|              +------v---------------------v------+                    |
-|              |            HAProxy               |                     |
-|              |  (Load Balancer/Reverse Proxy)   |                     |
-|              +----------------+-----------------+                     |
-|                               |                                       |
-|                       +-------v--------+                              |
-|                       |    Host:80     |                              |
-|                       |    Host:3306   |                              |
-|                       +----------------+                              |
-|                                                                       |
-+-----------------------------------------------------------------------+
+```mermaid
+flowchart LR
+    subgraph Docker Network[galera_network]
+        direction TB
+
+        subgraph DB[Galera Cluster]
+            direction LR
+            db1[(dbnode1\nPrimary)]
+            db2[(dbnode2)]
+            db3[(dbnode3)]
+            db1 -- wsrep --> db2
+            db2 -- wsrep --> db3
+            db3 -- wsrep --> db1
+        end
+
+        subgraph WP[WordPress Containers]
+            wp1[webnode1]
+            wp2[webnode2]
+            wp3[webnode3]
+        end
+
+        haproxy[[HAProxy]]
+    end
+
+    Internet --> haproxy
+    haproxy -- HTTP --> wp1 & wp2 & wp3
+    wp1 & wp2 & wp3 --> db1
+    haproxy -- MySQL --> DB
+
+    classDef db fill:#e6f3ff,stroke:#3399ff;
+    classDef wp fill:#e6ffe6,stroke:#33cc33;
+    classDef lb fill:#ffe6e6,stroke:#ff3333;
+    class db1,db2,db3 db
+    class wp1,wp2,wp3 wp
+    class haproxy lb
+```
 
 ## Herramientas de Prueba de Carga
 
