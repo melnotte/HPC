@@ -1,0 +1,19 @@
+
+================================================================
+WARNING: The number of users is capped at 255.  To increase this
+         limit, search your .siegerc file for 'limit' and change
+         its value. Make sure you read the instructions there...
+================================================================
+{	"transactions":			          38,
+	"availability":			      100.00,
+	"elapsed_time":			        1.87,
+	"data_transferred":		        0.34,
+	"response_time":		        1.00,
+	"transaction_rate":		       20.32,
+	"throughput":			        0.18,
+	"concurrency":			       20.34,
+	"successful_transactions":	          38,
+	"failed_transactions":		           0,
+	"longest_transaction":		        1.72,
+	"shortest_transaction":		        0.00
+}
