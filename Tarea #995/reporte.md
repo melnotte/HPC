@@ -37,7 +37,9 @@ Realizar el despliegue de Wordpress en HA con un LB con HAProxy y una BD sincron
 | Transferencia total      | 65.16 MB  |
 | Transacción más larga    | 33.89 s   |
 
-### Apache Benchmark
+## Parámetros de la Prueba Apache Benchmark
+- **Requests**: 3000
+- **Concurrencia**: 100
 
 | Métrica                     | Valor            |
 |-----------------------------|------------------|
