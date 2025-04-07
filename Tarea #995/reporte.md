@@ -89,14 +89,6 @@ flowchart LR
 | Tiempo máximo de solicitud  | 11.5 s           |
 | Solicitudes fallidas        | 0                |
 
-```mermaid
-xychart-beta
-    title "Distribución de Tiempos de Respuesta (ms)"
-    x-axis "Percentiles" --> 50% : 66% : 75% : 80% : 90% : 95% : 98% : 99% : 100%
-    y-axis "Tiempo (ms)" 0 --> 12000
-    bar [2589, 3002, 3398, 3685, 4885, 6078, 7565, 8555, 11546]
-        --> "Tiempo por percentil"
-```
 
 ## Comparación de Arquitectura
 
