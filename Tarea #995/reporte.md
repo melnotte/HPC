@@ -1,6 +1,8 @@
 # Prueba de Concepto (PoC) – Benchmark WordPress con Siege y ApacheBench
 
 ## Objetivo
-Evaluar el rendimiento de una aplicación WordPress bajo carga concurrente y aplicar mejoras de arquitectura para optimizar su desempeño.
+Realizar el despliegue de Wordpress en HA con un LB con HAProxy y una BD sincronizada en 3 nodos.
+
+
 
 
