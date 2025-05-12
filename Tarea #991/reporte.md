@@ -81,64 +81,56 @@ flowchart LR
 ```
 ![Contenedores](containers.PNG)
 
+![wordpress](wordpress.PNG)
+
 ## Herramientas de Prueba de Carga
 
 - **Siege**
 - **Apache Benchmark (ab)**
 
+
 ## Parámetros de la Prueba Siege
 
-- **Usuarios simultáneos**: 100
-- **Duración**: 5 minutos
-
----
+- **Usuarios simultáneos**: 10
+- **Repeticiones**: 100
+- **Duración**: 1 minuto
 
 ## Resultados
 
 ### Siege
 
-| Métrica                  | Valor     |
-|--------------------------|-----------|
-| Transacciones            | 18,412    |
-| Tiempo transcurrido      | 299.84 s  |
-| Transacciones por segundo| 61.41     |
-| Tiempo de respuesta promedio | 1.58 s|
-| Transacciones fallidas   | 0         |
-| Concurrencia promedio    | 97.03     |
-| Transferencia total      | 65.16 MB  |
-| Transacción más larga    | 33.89 s   |
+| Métrica                        | Valor       |
+|--------------------------------|-------------|
+| Transacciones                  | 7,339       |
+| Tiempo transcurrido            | 56.12 s     |
+| Transacciones por segundo      | 130.77      |
+| Tiempo de respuesta promedio   | 0.08 s      |
+| Transacciones fallidas         | 0           |
+| Concurrencia promedio          | 9.93        |
+| Transferencia total            | 25.97 MB    |
+| Transacción más larga          | 1.15 s      |
 
-## Otra prueba
-- **Usuarios simultáneos**: 200
-- **Duración**: 5 minutos
-
-![Siege](during_siege.PNG)
+---
 
 ## Parámetros de la Prueba Apache Benchmark
-- **Requests**: 3000
-- **Concurrencia**: 100
 
-## Resultados
+- **Requests**: 1000
+- **Concurrencia**: 10
 
-| Métrica                     | Valor            |
-|-----------------------------|------------------|
-| Solicitudes completadas     | 3000             |
-| Tiempo total de prueba      | 90.55 s          |
-| Solicitudes por segundo     | 33.13 req/sec    |
-| Tiempo por solicitud (media)| 3018 ms          |
-| Transferencia total         | 149.6 MB         |
-| Transferencia por segundo   | 1613.11 KB/s     |
-| Tiempo máximo de solicitud  | 11.5 s           |
-| Solicitudes fallidas        | 0                |
+### Resultados
 
-## Otra prueba
-- **Requests**: 4000
-- **Concurrencia**: 500
-![AB](ab2.PNG)
+| Métrica                        | Valor            |
+|--------------------------------|------------------|
+| Solicitudes completadas        | 1000             |
+| Tiempo total de prueba         | 36.555 s         |
+| Solicitudes por segundo        | 27.36 req/sec    |
+| Tiempo por solicitud (media)   | 365.552 ms       |
+| Transferencia total            | 49.86 MB         |
+| Transferencia por segundo      | 1331.92 KB/s     |
+| Tiempo máximo de solicitud     | 1902 ms          |
+| Solicitudes fallidas           | 0                |
+
+---
 
 ## Conclusiones
-
-- **Rendimiento sólido:** La arquitectura respondió bien con 100 usuarios concurrentes durante 5 minutos sin fallas.
-- **Resiliencia:** Al implementar healthchecks y reinicios automáticos, se asegura mejor disponibilidad ante fallos.
-- **Escalabilidad mejorada:** La arquitectura permite escalar fácilmente nodos WordPress o MariaDB según necesidad.
-- **Comparación:** se enfoca en modularidad, mejores prácticas de despliegue y resiliencia.
+Las pruebas de carga con Siege y Apache Benchmark muestran que la infraestructura de HAProxy y MariaDB Galera Cluster maneja eficientemente cargas moderadas sin solicitudes fallidas. El tiempo de respuesta promedio con Siege fue de 0.08 segundos, indicando una alta eficiencia, aunque con Apache Benchmark se observó un aumento en el tiempo promedio de solicitud (365.552 ms), lo que sugiere una ligera caída en el rendimiento con cargas más intensivas. Aunque el sistema es confiable bajo condiciones de tráfico elevado, podría beneficiarse de ajustes en el tiempo de espera y la distribución de cargas en HAProxy para optimizar el rendimiento en escenarios de alta concurrencia.
