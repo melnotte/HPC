@@ -1,12 +1,9 @@
 
-# Prueba de Concepto (PoC) – Benchmark WordPress con Siege y ApacheBench
+# Tarea #991 De la tarea #995 terminar de configurar la arquitectura completando el esquema de HA
 
-## Objetivo
-Realizar el despliegue de Wordpress en HA con un LB con HAProxy y una BD sincronizada en 3 nodos.
+#
 
-# Arquitectura de Alta Disponibilidad
-
-## Composición del Sistema:
+## Composición de la Arquitectura de Alta Disponibilidad:
 
 ### **MariaDB (Galera Cluster)**
 
