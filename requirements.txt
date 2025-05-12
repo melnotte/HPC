@@ -1,3 +1,4 @@
 pandas
 matplotlib
 elasticsearch
+python-dotenv

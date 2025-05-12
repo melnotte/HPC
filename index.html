@@ -1,13 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gráfico de Vistas por Año</title>
+    <title>Gráficos de los 1000 Videos de YouTube más Trending</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #1a73e8;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+
+        h2 {
+            color: #1a73e8;
+            margin-top: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .graph {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        img {
+            width: 90%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Aseguramos que las imágenes no se desborden en pantallas pequeñas */
+        @media (max-width: 600px) {
+            img {
+                width: 100%;
+            }
+        }
+
+        footer {
+            background-color: #1a73e8;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .source-link {
+            color: #1a73e8;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .source-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<h1>Gráfico de Vistas por Año</h1>
-<img src="src/views_by_year.png" alt="Gráfico de Vistas por Año">
-</body>
 
+<header>
+    <h1>Gráficos de YouTube Trending Videos</h1>
+</header>
+
+<div class="container">
+    <!-- Descripción del Dataset -->
+    <section>
+        <h2>Descripción del Dataset</h2>
+        <p>
+            Este dataset contiene detalles de los 1000 videos más populares de YouTube hasta el 18 de abril de 2025.
+        </p>
+        <p>Fuente: <a href="https://www.kaggle.com/datasets/samithsachidanandan/1000-most-trending-youtube-videos?resource=download" target="_blank" class="source-link">1000 Most Trending YouTube Videos - Kaggle</a></p>
+        <p><strong>Atributos:</strong></p>
+        <ul>
+            <li><strong>Rank:</strong> El ranking del video.</li>
+            <li><strong>Video:</strong> Nombre del video.</li>
+            <li><strong>Video views:</strong> Número de vistas del video.</li>
+            <li><strong>Likes:</strong> Número de likes del video.</li>
+            <li><strong>Dislikes:</strong> Número de dislikes del video.</li>
+            <li><strong>Category:</strong> Categoría del video.</li>
+            <li><strong>Published:</strong> Año de publicación del video.</li>
+        </ul>
+    </section>
+
+    <!-- Gráfico Top 10 Videos con más vistas -->
+    <section class="graph">
+        <h2>Top 10 de Videos con más Vistas</h2>
+        <img src="src/top_10_videos.png" alt="Top 10 Videos con más Vistas">
+    </section>
+
+    <!-- Gráfico Categorías con más likes -->
+    <section class="graph">
+        <h2>Categorías con Más Likes</h2>
+        <img src="src/categories_likes.png" alt="Categorías con más Likes">
+    </section>
+
+    <!-- Gráfico Categorías con más dislikes -->
+    <section class="graph">
+        <h2>Categorías con Más Dislikes</h2>
+        <img src="src/categories_dislikes.png" alt="Categorías con más Dislikes">
+    </section>
+
+    <!-- Gráfico Año vs cantidad de videos publicados -->
+    <section class="graph">
+        <h2>Año vs Cantidad de Videos Publicados</h2>
+        <img src="src/videos_per_year.png" alt="Cantidad de Videos Publicados por Año">
+    </section>
+
+    <!-- Gráfico Vistas por Año -->
+    <section class="graph">
+        <h2>Total de Vistas por Año</h2>
+        <img src="src/views_per_year.png" alt="Cantidad de Vistas por Año">
+    </section>
+</div>
+</body>
 </html>
