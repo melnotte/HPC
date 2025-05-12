@@ -4,12 +4,43 @@
 ## Objetivo
 Realizar el despliegue de Wordpress en HA con un LB con HAProxy y una BD sincronizada en 3 nodos.
 
-## Arquitectura Implementada
+# Arquitectura de Alta Disponibilidad
 
-- **WordPress** en alta disponibilidad con 3 nodos (`webnode1`, `webnode2`, `webnode3`)
-- **MariaDB Galera Cluster** con 3 nodos (`dbnode1`, `dbnode2`, `dbnode3`)
-- **HAProxy** como balanceador de carga
-- Infraestructura completamente contenedorizada con Docker Compose
+## Composición del Sistema:
+
+### **MariaDB (Galera Cluster)**
+
+El clúster de bases de datos está compuesto por tres nodos (dbnode1, dbnode2, dbnode3), donde:
+- **dbnode1** es el nodo primario.
+- Todos los nodos están sincronizados utilizando el protocolo **wsrep** de **Galera**.
+
+### **WordPress**
+
+Existen tres contenedores de **WordPress**:
+- **webnode1**, **webnode2**, **webnode3**.
+- Cada nodo de WordPress se conecta a la base de datos MariaDB a través del nodo **dbnode1** dentro de la red **galera_network**.
+
+### **HAProxy**
+
+El sistema de balanceo de carga está compuesto por cuatro instancias de **HAProxy**:
+1. **haproxy-master**: Balancea el tráfico **HTTP** entre los nodos de WordPress.
+2. **haproxy-slave**: Actúa como respaldo del **haproxy-master**, balanceando también el tráfico **HTTP**.
+3. **haproxy-db-master**: Balancea las conexiones **MySQL** entre los nodos del clúster de **MariaDB**.
+4. **haproxy-db-slave**: Actúa como respaldo del **haproxy-db-master**, balanceando también las conexiones **MySQL**.
+
+## Conexiones y Flujo de Datos
+
+1. **Tráfico HTTP de los usuarios**:
+   - Los usuarios acceden a **haproxy-master** o **haproxy-slave**.
+   - Estos balanceadores de carga dirigen el tráfico hacia uno de los nodos de **WordPress** (webnode1, webnode2 o webnode3).
+
+2. **Conexión de los nodos de WordPress a la base de datos**:
+   - Los nodos de **WordPress** (wp1, wp2 y wp3) se conectan al nodo primario de **MariaDB (dbnode1)** a través de los balanceadores de carga **haproxy-db-master** y **haproxy-db-slave**.
+
+3. **Balanceo de carga para las conexiones MySQL**:
+   - **haproxy-db-master** y **haproxy-db-slave** gestionan el balanceo de las conexiones **MySQL** entre los nodos del clúster de **MariaDB**.
+
+## Diagrama de la Arquitectura
 ```mermaid
 flowchart LR
     subgraph Docker Network[galera_network]
