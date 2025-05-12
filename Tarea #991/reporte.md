@@ -49,8 +49,7 @@ flowchart LR
 
     class db1,db2,db3 db;
     class wp1,wp2,wp3 wp;
-    class haproxy_master, haproxy_slave, haproxy_db_master, haproxy_db_slave lb;
-
+    class haproxy_master,haproxy_slave,haproxy_db_master,haproxy_db_slave lb;
 ```
 ![Contenedores](containers.PNG)
 
