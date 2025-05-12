@@ -1,1 +1,26 @@
-/.env
+# Environment files
+.env
+
+# Generated files
+*.png
+*.jpg
+*.jpeg
+
+# Python virtual environment
+.venv/
+venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IntelliJ IDEA files
+.idea/
+*.iml
+
+# Miscellaneous
+*.log
+*.bak
+*.swp
