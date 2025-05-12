@@ -136,27 +136,6 @@ flowchart LR
 - **Concurrencia**: 500
 ![AB](ab2.PNG)
 
-## Comparación de Arquitectura
-
-| Característica                   | Arquitectura Original          | Arquitectura Propuesta            |
-|----------------------------------|--------------------------------|-----------------------------------|
-| IPs Fijas en Red Docker          | Sí                             | No                                |
-| Uso de Variables y Seguridad     | Contraseña vacía en nodos      | Contraseña definida               |
-| Volúmenes Persistentes separados | Sí                             | Sí                                |
-| Reinicio automático              | No                             | `restart: unless-stopped`         |
-| Healthchecks                     | No                             | Para nodos de base de datos       |
-| Balanceo de carga                | HAProxy con IP fija            | HAProxy estándar                  |
-| Escalabilidad                    | Limitada                       | Más flexible                      |
-
-**Mejoras Realizadas:**
-
-- Se implementaron `healthchecks` para asegurar la disponibilidad antes de levantar servicios dependientes.
-- Se utilizó `restart: unless-stopped` para mejorar la resiliencia.
-- Uso explícito de variables de entorno para seguridad y configuración.
-- La arquitectura se mantiene modular y fácilmente replicable sin necesidad de IPs fijas.
-
----
-
 ## Conclusiones
 
 - **Rendimiento sólido:** La arquitectura respondió bien con 100 usuarios concurrentes durante 5 minutos sin fallas.
