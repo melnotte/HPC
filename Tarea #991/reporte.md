@@ -31,20 +31,28 @@ flowchart LR
             wp3[webnode3]
         end
 
-        haproxy[[HAProxy]]
+        subgraph HAProxy[HAProxy Load Balancers]
+            direction LR
+            haproxy_master[[haproxy-master]]
+            haproxy_slave[[haproxy-slave]]
+            haproxy_db_master[[haproxy-db-master]]
+            haproxy_db_slave[[haproxy-db-slave]]
+        end
     end
 
-    Internet --> haproxy
-    haproxy -- HTTP --> wp1 & wp2 & wp3
+    Internet --> haproxy_master
+    haproxy_master -- HTTP --> wp1 & wp2 & wp3
     wp1 & wp2 & wp3 --> db1
-    haproxy -- MySQL --> DB
+    haproxy_db_master -- MySQL --> DB
+    haproxy_db_slave -- MySQL --> DB
+    haproxy_slave -- HTTP --> wp1 & wp2 & wp3
 
     classDef db fill:#e6f3ff,stroke:#3399ff;
     classDef wp fill:#e6ffe6,stroke:#33cc33;
     classDef lb fill:#ffe6e6,stroke:#ff3333;
     class db1,db2,db3 db
     class wp1,wp2,wp3 wp
-    class haproxy lb
+    class haproxy_master, haproxy_slave, haproxy_db_master, haproxy_db_slave lb
 ```
 ![Contenedores](containers.PNG)
 
