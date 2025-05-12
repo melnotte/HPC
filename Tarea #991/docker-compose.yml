@@ -1,0 +1,181 @@
+version: '3.8'
+
+services:
+  # MariaDB Cluster Nodes
+  dbnode1:
+    container_name: dbnode1
+    image: mycluster/galera
+    environment:
+      MYSQL_ROOT_PASSWORD: bartolito
+      GALERA_NEW_CLUSTER: "1"
+    command: mysqld --wsrep-new-cluster
+    hostname: dbnode1
+    networks:
+      - galera_network
+    volumes:
+      - ./galera/node1.cnf:/etc/mysql/conf.d/galera.cnf
+      - galera_node1_data:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  dbnode2:
+    container_name: dbnode2
+    image: mycluster/galera
+    environment:
+      MYSQL_ROOT_PASSWORD: bartolito
+    hostname: dbnode2
+    depends_on:
+      dbnode1:
+        condition: service_healthy
+    networks:
+      - galera_network
+    volumes:
+      - ./galera/node2.cnf:/etc/mysql/conf.d/galera.cnf
+      - galera_node2_data:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  dbnode3:
+    container_name: dbnode3
+    image: mycluster/galera
+    environment:
+      MYSQL_ROOT_PASSWORD: bartolito
+    hostname: dbnode3
+    depends_on:
+      dbnode1:
+        condition: service_healthy
+    networks:
+      - galera_network
+    volumes:
+      - ./galera/node3.cnf:/etc/mysql/conf.d/galera.cnf
+      - galera_node3_data:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  # WordPress Web Nodes
+  webnode1:
+    container_name: webnode1
+    image: wordpress
+    environment:
+      WORDPRESS_DB_HOST: dbnode1
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: bartolito
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - dbnode1
+    networks:
+      - galera_network
+    volumes:
+      - wordpress_data:/var/www/html
+    restart: unless-stopped
+
+  webnode2:
+    container_name: webnode2
+    image: wordpress
+    environment:
+      WORDPRESS_DB_HOST: dbnode1
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: bartolito
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - dbnode1
+    networks:
+      - galera_network
+    volumes:
+      - wordpress_data:/var/www/html
+    restart: unless-stopped
+
+  webnode3:
+    container_name: webnode3
+    image: wordpress
+    environment:
+      WORDPRESS_DB_HOST: dbnode1
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: bartolito
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - dbnode1
+    networks:
+      - galera_network
+    volumes:
+      - wordpress_data:/var/www/html
+    restart: unless-stopped
+
+  # HAProxy Master Load Balancer for Web Nodes
+  haproxy-master:
+    image: haproxy
+    depends_on:
+      - webnode1
+      - webnode2
+      - webnode3
+    ports:
+      - "80:80"
+    networks:
+      - galera_network
+    volumes:
+      - ./haproxy-master.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    restart: unless-stopped
+
+  # HAProxy Slave Load Balancer for Web Nodes
+  haproxy-slave:
+    image: haproxy
+    depends_on:
+      - webnode1
+      - webnode2
+      - webnode3
+    ports:
+      - "8080:80"
+    networks:
+      - galera_network
+    volumes:
+      - ./haproxy-slave.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    restart: unless-stopped
+
+  # HAProxy Master Load Balancer for DB Nodes (MariaDB Cluster)
+  haproxy-db-master:
+    image: haproxy
+    depends_on:
+      - dbnode1
+      - dbnode2
+      - dbnode3
+    ports:
+      - "3306:3306"
+    networks:
+      - galera_network
+    volumes:
+      - ./haproxy-db-master.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    restart: unless-stopped
+
+  # HAProxy Slave Load Balancer for DB Nodes (MariaDB Cluster)
+  haproxy-db-slave:
+    image: haproxy
+    depends_on:
+      - dbnode1
+      - dbnode2
+      - dbnode3
+    ports:
+      - "3307:3306"  # Could be another port for redundancy
+    networks:
+      - galera_network
+    volumes:
+      - ./haproxy-db-slave.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    restart: unless-stopped
+
+networks:
+  galera_network:
+    driver: bridge
+
+volumes:
+  galera_node1_data:
+  galera_node2_data:
+  galera_node3_data:
+  wordpress_data:

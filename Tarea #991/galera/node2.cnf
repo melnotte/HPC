@@ -1,0 +1,17 @@
+[mysqld]
+# Galera Configuration
+wsrep_on=ON
+wsrep_provider=/usr/lib/galera/libgalera_smm.so
+wsrep_cluster_address="gcomm://dbnode1,dbnode2,dbnode3"
+wsrep_cluster_name="galera-cluster"
+wsrep_node_name="node2"  # Change for each node
+wsrep_node_address=""    # Leave empty, Docker will handle
+wsrep_sst_method=rsync
+binlog_format=ROW
+default_storage_engine=InnoDB
+innodb_autoinc_lock_mode=2
+
+# Node-specific settings
+server-id=2              # Unique for each node (1, 2, 3)
+datadir=/var/lib/mysql
+bind-address=0.0.0.0
